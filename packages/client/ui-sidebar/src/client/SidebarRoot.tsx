@@ -140,7 +140,7 @@ export function SidebarRoot({
       <div className={css.logoRow}>
         {/* Expanded, the brand doubles as a New Session shortcut; the
             collapsed rail's logo is the expand toggle below instead. */}
-        {wide && (
+        {false && wide && ( // 业务定制：隐藏左侧顶部鲸鱼 logo 与文字
           <button
             type="button"
             className={clsx(css.brand, css.wide)}

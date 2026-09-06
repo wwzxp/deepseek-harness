@@ -176,6 +176,8 @@ function CardDescription({ text }: { text: string }): ReactNode {
  * @returns the section, or null when the deployment composes no presets.
  */
 export function AgentPresetSection(props: AgentPresetSectionProps): ReactNode {
+  // 业务定制：隐藏设置页 agent 预设选项（会话强制业务助手）
+  return null
   const { useAgentPresetSection, t, load } = props
   const state = useAgentPresetSection(snapshot => snapshot)
   const viewedId = state.view?.id

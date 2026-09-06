@@ -191,14 +191,6 @@ export function apply(ctx: ClientContext): void {
     makeDefault: (id: string) => section.makeDefault(id),
   })
 
-  // Ordered after Models: choosing a model is routine, and composing an
-  // agent is the deployment-shaping act behind it.
-  ctx.slots.inject('settings.section', () => ctx.slots.register({
-    name: 'settings.section',
-    id: 'agent-presets',
-    order: 20,
-    label: () => ctx.locale.bind('settings.agentPreset')('nav'),
-    locale: 'settings.agentPreset',
-    inject: sectionInjected,
-  }, AgentPresetSection))
+  // 业务定制：隐藏设置页 Agent 预设选项（会话强制业务助手，默认 preset 由组合配置 agentPresets.default 指定）
+  void sectionInjected
 }
