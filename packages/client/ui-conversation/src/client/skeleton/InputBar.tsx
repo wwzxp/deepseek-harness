@@ -128,7 +128,7 @@ export const InputBar = memo(function InputBar({
   // existing picker trigger. Message controls stay locked until a Session
   // exists; the trigger itself is read-only rather than disabled so pointer
   // and keyboard users can reach the recovery action.
-  const workspaceTrigger = inert && !removed && onRequestWorkspace !== undefined
+  const workspaceTrigger = false && inert && !removed && onRequestWorkspace !== undefined // 业务定制：隐藏工作区选择触发（固定知识库目录）
   const editorDisabled = removed || (locked && !workspaceTrigger)
   const editable = live && !locked && !machineBusy
   const canSteerQueue = !locked && !machineBusy && !commandMenuOpen && empty && running && subagent === null

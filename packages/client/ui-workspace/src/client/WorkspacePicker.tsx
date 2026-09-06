@@ -222,7 +222,13 @@ export function WorkspacePickFlow({
  * @param props - empty-state slot props (owner share + injected creation callback).
  * @returns the flow element.
  */
-export function WorkspacePicker({
+export function WorkspacePicker() {
+  // 业务定制：隐藏工作区选择器——工作区固定为知识库目录，不给用户选择
+  return null
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _WorkspacePickerOriginal({
   open,
   anchorRef,
   useWorkspaces,

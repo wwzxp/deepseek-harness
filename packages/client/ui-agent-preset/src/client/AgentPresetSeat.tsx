@@ -83,6 +83,8 @@ export type AgentPresetSeatProps =
  * @returns the chip, or null when the deployment composes no presets.
  */
 export function AgentPresetSeat({ load, select, introduced, useAgentPresetSeat, t }: AgentPresetSeatProps) {
+  // 业务定制：隐藏模式（preset）选择器——会话强制业务助手，不给用户切换
+  return null
   const state = useAgentPresetSeat(snapshot => snapshot)
   const [open, setOpen] = useState(false)
   // The seq keys the banner, so picking the same broken preset twice replays

@@ -42,23 +42,8 @@ export function WorkspaceChip({ buttonRef, label, menuOpen = false, onClick, t }
   onClick?: () => void
   t: HeroTranslate
 }) {
-  return (
-    <button
-      ref={buttonRef}
-      type="button"
-      className={css.workspace}
-      aria-label={t('hero.chooseWorkspace')}
-      aria-haspopup="menu"
-      aria-expanded={menuOpen}
-      onClick={onClick}
-    >
-      {label === undefined
-        ? <IconFolderClose16 className={css.folder} size={16} />
-        : <IconFolderOpen16 className={css.folder} size={16} />}
-      <span className={css.workspaceLabel}>{label ?? t('hero.chooseWorkspace')}</span>
-      <IconChevronDownOutline14 className={css.chevron} size={12} />
-    </button>
-  )
+  // 业务定制：隐藏工作区选择 chip（工作区固定为知识库目录，不给用户切换）
+  return null
 }
 
 /** Hero chrome props. The workspace row rides the InputBar accessory hole, not here. */
