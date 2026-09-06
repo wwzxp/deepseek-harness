@@ -1142,10 +1142,8 @@ export function WorkspaceBrowser({
               t={t}
             />
           )}
-          {/* Adding is the button's one action, so a composition with no
-              picking affordance has nothing to offer here: the region hides the
-              button rather than leaving a dead one in the header. */}
-          {directoryFlowAvailable && (
+          {/* 业务定制：强制隐藏'添加工作区'按钮（工作区固定为知识库目录，禁止创建其它） */}
+          {false && directoryFlowAvailable && (
             <Tooltip label={t('workspace.add')} side="bottom" delayMs={500}>
               <button
                 ref={wsPlusRef}

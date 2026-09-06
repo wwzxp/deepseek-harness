@@ -36,9 +36,21 @@ export class WorkspaceCommands {
    * @param request - directory path to register.
    * @returns the Workspace and whether this call created it.
    */
+  /** 固定业务工作区（知识库目录）：仅允许此路径的工作区，禁止创建其它工作区（业务系统定制）。 */
+  private readonly fixedWorkspace = (process.env.MEMBER_WORKSPACE ?? 'E:/ai/code/Member_management').replace(/[\\/]+$/, '')
+
   create(request: WorkspaceCreateRequest): Promise<WorkspaceCreateValue> {
     return this.enqueue(async () => {
       try {
+        // 业务定制：强制锁定工作区目录（用户要求：默认/唯一工作区 = 知识库目录，禁止创建其它）
+        const canonical = (request.path ?? '').replace(/[\\/]+$/, '')
+        if (canonical.toLowerCase() !== this.fixedWorkspace.toLowerCase()) {
+          throw new RemoteError(
+            'workspace/invalid-path',
+            `该业务系统仅允许使用固定工作区（${this.fixedWorkspace}），不能创建其它工作区`,
+            { path: request.path },
+          )
+        }
         const existing = await this.ctx.workspaceRegistry.resolveByPath(request.path)
         if (existing !== undefined) {
           return { workspace: workspaceView(existing), created: false }

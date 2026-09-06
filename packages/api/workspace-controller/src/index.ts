@@ -47,6 +47,11 @@ export class WorkspaceController extends TypertRemoteService {
     // stays pending until a picking backend is composed, so a host without one
     // registers no picking namespace instead of answering an unservable verb.
     ctx.plugin(DirectoryPickerController)
+    // 业务定制：启动即注册固定工作区（知识库目录，幂等）→ 列表默认/唯一工作区
+    const fixed = process.env.MEMBER_WORKSPACE ?? 'E:/ai/code/Member_management'
+    void ctx.workspaceRegistry.resolveByPath(fixed)
+      .then(existing => existing ?? ctx.workspaceRegistry.create(fixed))
+      .catch(err => console.warn('[workspace-controller] 固定工作区注册失败:', err instanceof Error ? err.message : err))
   }
 
   /**
