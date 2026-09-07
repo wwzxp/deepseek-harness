@@ -1,0 +1,117 @@
+.view {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.refresh {
+  padding: 3px 10px;
+  border: 1px solid var(--dsh-color-border, #d9d9d9);
+  border-radius: 4px;
+  background: var(--dsh-color-bg, #fff);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.error {
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: var(--dsh-color-danger-bg, #fdf0f0);
+  color: var(--dsh-color-danger, #f56c6c);
+  font-size: 12px;
+}
+
+.sectionTitle {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dsh-color-text-secondary, #909399);
+}
+
+.empty {
+  padding: 8px 0;
+  color: var(--dsh-color-text-tertiary, #c0c4cc);
+  font-size: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--dsh-color-border, #ebeef5);
+  border-radius: 6px;
+}
+
+.rowMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dsh-color-text, #303133);
+  margin-right: 8px;
+}
+
+.desc {
+  font-size: 12px;
+  color: var(--dsh-color-text-secondary, #666);
+}
+
+.sample {
+  display: block;
+  font-size: 11px;
+  color: var(--dsh-color-text-tertiary, #c0c4cc);
+  margin-top: 2px;
+}
+
+.confirm {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  background: var(--dsh-color-primary, #2f6fd6);
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.del {
+  padding: 4px 10px;
+  border: 1px solid var(--dsh-color-danger, #f56c6c);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--dsh-color-danger, #f56c6c);
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.catGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.catTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dsh-color-text-secondary, #606266);
+  padding: 2px 0;
+}

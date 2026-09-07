@@ -41,6 +41,7 @@ import type {} from '@deepseek-ai/dsh-client-locale/client'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import { SkillRow } from './SkillRow.tsx'
 import { en, NS, zh, type SkillKey } from './locales.ts'
+import { SkillManageView } from './SkillManageView.tsx'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -70,6 +71,14 @@ export function apply(ctx: ClientContext): void {
     { name: 'tool.call.toolview', key: 'skill', locale: NS },
     SkillRow,
   ))
+  // 技能库管理（spec §19.5.4）：设置页"技能库"分区 —— 已发现技能 + 候选确认 + 删除
+  const ts = ctx.locale.bind(NS)
+  ctx.slots.inject('settings.section', () => ctx.slots.register({
+    name: 'settings.section',
+    id: 'skill-manage',
+    order: 30,
+    label: ts('manage.title'),
+  }, SkillManageView))
 
   const skills = ctx.remote.skills
   const sessions = ctx.sessions
