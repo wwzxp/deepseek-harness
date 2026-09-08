@@ -46,6 +46,13 @@ export interface Config {
    * runtime's safe allocation/decode maximum. Defaults to 10 MiB.
    */
   diffBasisMaxBytes?: number
+  /**
+   * Write-isolation list (member fork): relative-to-cwd path prefixes whose
+   * writes (writeText/editText) are denied. Reads stay allowed. Enforces
+   * spec §19.5.6 — knowledge-base consistency must go through the
+   * consistency-enforcing tool (kb_write), not raw filesystem edits.
+   */
+  denyWritePrefixes?: string[]
 }
 
 type ResolvedConfig = Required<Config>
@@ -65,6 +72,7 @@ export class LocalFileSystem extends FileSystem {
   static Config: z<Config> = z.object({
     cwd: z.string().default(process.cwd()),
     diffBasisMaxBytes: z.number().default(DEFAULT_DIFF_BASIS_MAX_BYTES),
+    denyWritePrefixes: z.array(z.string()).default([]),
   })
 
   /** Validated config (schemastery applied the defaults before construction). */
@@ -167,12 +175,31 @@ export class LocalFileSystem extends FileSystem {
     }))
   }
 
+  /** member fork: write-isolation gate (spec §19.5.6) — deny writes under configured prefixes. */
+  private assertWriteAllowed(target: FsTarget): void {
+    const deny = this.config.denyWritePrefixes
+    if (deny.length === 0) return
+    const cwdBase = resolve(this.config.cwd)
+    const abs = String(target.targetKey)
+    const rel = relative(cwdBase, abs).replace(/\\/g, '/')
+    for (const pre of deny) {
+      const p = pre.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '')
+      if (rel === p || rel.startsWith(p + '/') || abs.startsWith(resolve(cwdBase, p) + sep)) {
+        throw new FsError(
+          `write denied: "${target.displayPath}" is under protected path "${pre}" (知识库一致性命中，请用 kb_write 工具操作)`,
+          'FS_WRITE_DENIED',
+        )
+      }
+    }
+  }
+
   override async writeText(
     target: FsTarget,
     content: string,
     expected?: FsWriteIntent,
     signal?: AbortSignal,
   ): Promise<FsWriteOutcome> {
+    this.assertWriteAllowed(target)
     return this.withLock(target.targetKey, async () => {
       const existing = await probe(target.targetKey)
       if (existing && existing.type !== 'file') {
@@ -228,6 +255,7 @@ export class LocalFileSystem extends FileSystem {
     expected?: { version: FsVersion },
     signal?: AbortSignal,
   ): Promise<FsEditOutcome> {
+    this.assertWriteAllowed(target)
     return this.withLock(target.targetKey, async () => {
       const existing = await probe(target.targetKey)
       // Stale guard before literal matching: an edit based on an old read reports
