@@ -231,32 +231,3 @@ export function WorkspacePicker() {
   // 业务定制：隐藏工作区选择器——工作区固定为知识库目录，不给用户选择
   return null
 }
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function _WorkspacePickerOriginal({
-  open,
-  anchorRef,
-  useWorkspaces,
-  selectedId,
-  onPick,
-  onClose,
-  createWorkspace,
-  useDirectoryFlow,
-  renderSlot,
-  t,
-}: WorkspacePickerProps) {
-  return (
-    <WorkspacePickFlow
-      t={t}
-      open={open}
-      anchorRef={anchorRef}
-      useWorkspaces={useWorkspaces}
-      createWorkspace={createWorkspace}
-      useDirectoryFlow={useDirectoryFlow}
-      renderDirectoryFlow={owner => renderSlot('conversation.hero.workspace.directoryFlow', owner)}
-      selectedId={selectedId}
-      onPick={onPick}
-      onClose={onClose}
-    />
-  )
-}
