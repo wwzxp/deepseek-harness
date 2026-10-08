@@ -50,14 +50,15 @@ export function AgentPresetLabel({
   const options = useAgentPresets(state => state.options)
 
   useEffect(() => {
-    // Deployments that compose no presets never label anything, so the roster
-    // is only worth a request once a session reports one.
-    if (preset !== undefined) void load()
-  }, [preset, load])
+    // 会话记录 preset 或需要默认兜底时都加载 roster（兜底显示 Host 默认 preset 名）。
+    if (preset !== undefined || options.length === 0) void load()
+  }, [preset, options.length, load])
 
-  if (preset === undefined) return null
+  // 会话未显式记录 preset 时，展示 Host 生效默认 preset（如业务助手）——默认 preset 同样应该可见。
+  const effective = preset ?? options.find(entry => entry.isDefault === true)?.id
+  if (effective === undefined) return null
 
-  const option = options.find(entry => entry.id === preset)
+  const option = options.find(entry => entry.id === effective)
   const text = option === undefined ? undefined : presetDisplayText(option, t)
   return (
     <span className={css.label} title={text?.description ?? t('headerHint')}>

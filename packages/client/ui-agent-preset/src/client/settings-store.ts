@@ -44,6 +44,8 @@ export interface AgentPresetOption {
   name?: string
   /** One sentence on what the preset is for. */
   description?: string
+  /** Whether this preset is the Host-effective default. */
+  isDefault?: boolean
 }
 
 /** Whether a shipped preset requires the Coding Tools preference.
@@ -117,12 +119,13 @@ export async function beginRosterRead<S extends { status: string; error: string 
  * @returns one option per selectable preset, in roster order.
  */
 export function presetOptions(
-  presets: readonly { id: string; name?: string; description?: string; broken?: string }[],
+  presets: readonly { id: string; name?: string; description?: string; broken?: string; isDefault?: boolean }[],
 ): AgentPresetOption[] {
   return presets.filter(preset => preset.broken === undefined).map(preset => ({
     id: preset.id,
     ...preset.name === undefined ? {} : { name: preset.name },
     ...preset.description === undefined ? {} : { description: preset.description },
+    ...(preset.isDefault === true ? { isDefault: true } : {}),
   }))
 }
 
