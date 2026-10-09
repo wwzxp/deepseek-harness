@@ -580,4 +580,4 @@
     - id: agent-preset-registry
       name: '@deepseek-ai/dsh-agent-preset-registry'
       config:
-        default: standard
+        default: member
